@@ -2,7 +2,7 @@
 
 > An interactive PM workshop to understand Large Language Models, from fundamentals to production deployment
 
-**Live Demo:** [https://hilarious-kitsune-f3dc25.netlify.app/](https://hilarious-kitsune-f3dc25.netlify.app/)
+**Live Demo:** https://productmanagerplayground.netlify.app/
 
 ## 📚 Overview
 
