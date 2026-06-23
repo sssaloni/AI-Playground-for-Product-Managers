@@ -6,6 +6,7 @@ import {
 import PMInsight from '../components/PMInsight'
 import PresenterNotes from '../components/PresenterNotes'
 import { useAppStore } from '../store/useAppStore'
+import SectionCompleteButton from '../components/SectionCompleteButton'
 
 const chunkTextSample = "Retrieval-Augmented Generation (RAG) is an architectural pattern that optimizes Large Language Model outputs. It does this by querying authoritative external databases prior to generating responses. When a user prompt enters the system, the query is converted into a vector embedding. This query vector is matched against a Vector Database of chunked document embeddings to find the most semantically relevant snippets. These snippets are then appended into the prompt context. This gives the model non-parametric factual details. Consequently, the LLM generates a grounded response with high accuracy, eliminating knowledge cutoffs and reducing hallucinations."
 
@@ -1780,13 +1781,7 @@ LLM Output: { "sentiment": "negative", "score": 0.12 } (Perfect match to format!
 
           <div className="border-t border-zinc-800 pt-4 flex flex-col md:flex-row justify-between items-center gap-3 text-xs">
             <span className="text-zinc-500">Completed RAG Deep-Dive Session?</span>
-            <button
-              onClick={() => { completeSection(16); }}
-              className="flex items-center gap-2 px-5 py-2 bg-brandGreen text-white text-xs font-semibold rounded-lg hover:bg-brandGreen/90 glow-green transition-colors cursor-pointer"
-            >
-              <Play className="w-3.5 h-3.5 fill-white" />
-              <span>Mark Session Completed</span>
-            </button>
+            <SectionCompleteButton sectionId={16} label="Mark Session Completed" />
           </div>
         </div>
       )

@@ -81,15 +81,20 @@ export default function Login() {
 
     setIsSubmitting(true)
 
-    // Call local endpoint to log email (wrapped in try/catch to fail silently if backend is offline)
+    // Call Supabase API to log email address
     try {
-      await fetch('/api/log-email', {
+      await fetch('https://lttdffetbxmnxbhcmqeq.supabase.co/rest/v1/workshop_logins', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx0dGRmZmV0YnhtbnhiaGNtcWVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMDAwODgsImV4cCI6MjA5Nzc3NjA4OH0.KH4raNmEtkYV5bfBPjvUgfFxK1BjCZ_A3TwWqvN1hh8',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx0dGRmZmV0YnhtbnhiaGNtcWVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMDAwODgsImV4cCI6MjA5Nzc3NjA4OH0.KH4raNmEtkYV5bfBPjvUgfFxK1BjCZ_A3TwWqvN1hh8',
+          'Prefer': 'return=minimal'
+        },
         body: JSON.stringify({ email: cleanEmail })
       })
     } catch (err) {
-      console.error('Failed to log email to local sheet:', err)
+      console.error('Failed to log email to Supabase:', err)
     }
 
     // Add a slight delay for smooth transition and premium loading feel

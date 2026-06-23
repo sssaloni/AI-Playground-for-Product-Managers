@@ -7,6 +7,8 @@ export const useAppStore = create((set) => ({
   openaiKey: localStorage.getItem('openai_key') || '',
   userEmail: localStorage.getItem('user_email') || null,
   isPresenter: localStorage.getItem('is_presenter') === 'true',
+  showBadgeModal: false,
+  setShowBadgeModal: (val) => set({ showBadgeModal: val }),
   
   // Capstone Challenge State
   capstone: {
@@ -64,12 +66,22 @@ export const useAppStore = create((set) => ({
   completeSection: (id) => set((state) => {
     if (state.completedSections.includes(id)) return state;
     const updated = [...state.completedSections, id];
-    return { completedSections: updated };
+    
+    // Check if 100% progress of non-secret sections is reached
+    const nonSecretIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16];
+    const completedCount = updated.filter(sid => nonSecretIds.includes(sid)).length;
+    const completedAll = completedCount === nonSecretIds.length;
+
+    return { 
+      completedSections: updated,
+      showBadgeModal: completedAll ? true : state.showBadgeModal
+    };
   }),
 
   resetProgress: () => set({
     completedSections: [],
     activeSection: 1,
+    showBadgeModal: false,
     capstone: {
       problem: '',
       user: '',

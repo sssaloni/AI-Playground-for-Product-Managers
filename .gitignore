@@ -23,6 +23,3 @@ dist-ssr
 *.sln
 *.sw?
 
-# Local workshop email logs
-emails.csv
-

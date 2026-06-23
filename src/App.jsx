@@ -21,9 +21,10 @@ import CapstoneChallenge from './sections/CapstoneChallenge'
 import InsideChatGPT from './sections/InsideChatGPT'
 import ResponseGenerator from './sections/ResponseGenerator'
 import Login from './components/Login'
+import CelebrationModal from './components/CelebrationModal'
 
 function App() {
-  const { activeSection, presenterMode, userEmail } = useAppStore()
+  const { activeSection, presenterMode, userEmail, completedSections } = useAppStore()
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark')
 
   useEffect(() => {
@@ -35,6 +36,61 @@ function App() {
     }
     localStorage.setItem('theme', theme)
   }, [theme])
+
+  // Track progress and current page in Supabase in real-time
+  useEffect(() => {
+    if (!userEmail) return
+
+    const getSectionName = (id) => {
+      switch (id) {
+        case 1: return 'Why AI Matters'
+        case 2: return 'Evolution of AI'
+        case 3: return 'Next Token Predictor'
+        case 4: return 'Tokenizer Visualizer'
+        case 5: return 'Embedding Explorer'
+        case 6: return 'Temperature Playground'
+        case 7: return 'Attention Simulator'
+        case 8: return 'Hallucination Lab'
+        case 9: return 'Prompt Builder'
+        case 10: return 'RAG Simulator'
+        case 16: return 'RAG Masterclass'
+        case 11: return 'Product Assistant Builder'
+        case 12: return 'AI Product Architecture'
+        case 13: return 'Capstone Challenge'
+        case 15: return 'Response Generator'
+        default: return 'Inside ChatGPT (Secret)'
+      }
+    }
+
+    const totalSteps = 15
+    const completedCount = (completedSections || []).filter(id => id !== 14).length
+    const progressPercent = `${Math.min(100, Math.round((completedCount / totalSteps) * 100))}%`
+
+    const logProgress = async () => {
+      try {
+        await fetch('https://lttdffetbxmnxbhcmqeq.supabase.co/rest/v1/workshop_logins', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx0dGRmZmV0YnhtbnhiaGNtcWVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMDAwODgsImV4cCI6MjA5Nzc3NjA4OH0.KH4raNmEtkYV5bfBPjvUgfFxK1BjCZ_A3TwWqvN1hh8',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx0dGRmZmV0YnhtbnhiaGNtcWVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMDAwODgsImV4cCI6MjA5Nzc3NjA4OH0.KH4raNmEtkYV5bfBPjvUgfFxK1BjCZ_A3TwWqvN1hh8',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ 
+            email: userEmail,
+            active_page: `Section ${activeSection}: ${getSectionName(activeSection)}`,
+            progress: progressPercent
+          })
+        })
+      } catch (err) {
+        console.error('Failed to log progress to Supabase:', err)
+      }
+    }
+
+    // Debounce fast navigation
+    const timeoutId = setTimeout(logProgress, 600)
+    return () => clearTimeout(timeoutId)
+  }, [activeSection, completedSections, userEmail])
 
   const toggleTheme = () => {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark')
@@ -128,6 +184,7 @@ function App() {
           </div>
         </main>
       </div>
+      <CelebrationModal />
     </div>
   )
 }

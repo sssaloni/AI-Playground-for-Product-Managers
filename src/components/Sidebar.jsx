@@ -35,7 +35,8 @@ export default function Sidebar() {
     togglePresenterMode, 
     resetProgress,
     isPresenter,
-    logout
+    logout,
+    setShowBadgeModal
   } = useAppStore()
 
   const [isCollapsed, setIsCollapsed] = useState(() => localStorage.getItem('sidebar-collapsed') === 'true')
@@ -103,6 +104,15 @@ export default function Sidebar() {
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
+            {progressPercent === 100 && (
+              <button
+                onClick={() => setShowBadgeModal(true)}
+                className="mt-3.5 w-full flex items-center justify-center gap-1.5 py-2 bg-brandPurple/20 hover:bg-brandPurple/35 border border-brandPurple/50 text-white rounded-xl text-xs font-bold transition-all cursor-pointer animate-pulse"
+              >
+                <Award className="w-4 h-4 text-brandYellow fill-brandYellow/15" />
+                <span>Claim Completion Badge</span>
+              </button>
+            )}
           </div>
         </div>
       )}

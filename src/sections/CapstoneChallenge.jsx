@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Award, Download, RefreshCw, Send, CheckCircle } from 'lucide-react'
 import { useAppStore } from '../store/useAppStore'
+import SectionCompleteButton from '../components/SectionCompleteButton'
 import PMInsight from '../components/PMInsight'
 import PresenterNotes from '../components/PresenterNotes'
 import confetti from 'canvas-confetti'
@@ -143,13 +144,7 @@ export default function CapstoneChallenge() {
       </div>
 
       <div className="mt-8 border-t border-zinc-800 pt-4 flex justify-end no-print">
-        <button
-          onClick={() => completeSection(13)}
-          className="flex items-center gap-2 px-5 py-2.5 bg-brandGreen text-white text-sm font-semibold rounded-lg hover:bg-brandGreen/90 glow-green transition-colors"
-        >
-          <CheckCircle className="w-4 h-4 fill-white text-brandGreen" />
-          <span>Mark Section Completed</span>
-        </button>
+        <SectionCompleteButton sectionId={13} />
       </div>
     </div>
   )

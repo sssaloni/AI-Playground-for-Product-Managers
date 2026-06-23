@@ -3,6 +3,7 @@ import { Hammer, Sparkles, AlertCircle, Copy, Check, Play, Info } from 'lucide-r
 import PMInsight from '../components/PMInsight'
 import PresenterNotes from '../components/PresenterNotes'
 import { useAppStore } from '../store/useAppStore'
+import SectionCompleteButton from '../components/SectionCompleteButton'
 
 const frameworks = {
   crispe: {
@@ -413,13 +414,7 @@ export default function PromptBuilder() {
       </div>
 
       <div className="mt-8 border-t border-zinc-800 pt-4 flex justify-end">
-        <button
-          onClick={() => completeSection(9)}
-          className="flex items-center gap-2 px-5 py-2.5 bg-brandGreen text-white text-sm font-semibold rounded-lg hover:bg-brandGreen/90 glow-green transition-colors"
-        >
-          <Play className="w-4 h-4 fill-white" />
-          <span>Mark Section Completed</span>
-        </button>
+        <SectionCompleteButton sectionId={9} />
       </div>
     </div>
   )
