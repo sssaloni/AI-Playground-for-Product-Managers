@@ -1,42 +1,41 @@
 import React, { useState, useEffect } from 'react'
 import { Sliders, RefreshCw, Play, ShieldAlert, Sparkles } from 'lucide-react'
 import PMInsight from '../components/PMInsight'
-import KarpathyInsight from '../components/KarpathyInsight'
 import PresenterNotes from '../components/PresenterNotes'
 import { useAppStore } from '../store/useAppStore'
 
 const tempOutputs = {
   0: {
     description: "Low Temperature (T = 0.0) - Completely deterministic. The model always chooses the highest probability token. No variation.",
-    idea: "A subscription-based SaaS platform that automates invoice reconciliation for mid-sized accounting firms. It integrates directly with QuickBooks and matches bank feeds to outstanding receipts, reducing manual entry by 80%.",
+    idea: "A product manager builds the product roadmap.",
     reliability: 100,
     creativity: 5,
-    tag: "Predictable / Boring"
+    tag: "Deterministic / Focused"
   },
   0.3: {
     description: "Low-Med Temperature (T = 0.3) - High consistency with minimal variation. Useful for structured data outputs and APIs.",
-    idea: "An automated billing platform designed specifically for freelance contractors. The system analyzes client communication to draft invoices, sets up automatic payment reminders, and predicts cash flow bottlenecks.",
+    idea: "A product manager builds the product roadmap and sprint backlog.",
     reliability: 90,
     creativity: 25,
     tag: "Structured Business"
   },
   0.7: {
     description: "Medium Temperature (T = 0.7) - Balance of consistency and creativity. Standard setting for general chat and blogging assistants.",
-    idea: "An AI-powered interior design assistant. Users upload a photo of a room and a link to their Pinterest board; the tool generates a 3D shoppable render using furniture items that are currently in stock at local retail stores.",
+    idea: "A product manager builds the user-centric roadmap to align cross-functional engineering teams.",
     reliability: 65,
     creativity: 60,
-    tag: "Balanced / Practical"
+    tag: "Balanced / Professional"
   },
   1.0: {
     description: "High Temperature (T = 1.0) - High variety and creative risk. Good for brainstorming, creative writing, and synonyms.",
-    idea: "A virtual reality networking workspace where remote teams collaborate inside simulated historical eras. Conduct your stand-ups in a 1920s jazz club or write product requirements on a virtual scroll in ancient Rome.",
+    idea: "A product manager builds the dream catcher for ideas, funneling chaos into structured features.",
     reliability: 35,
     creativity: 85,
     tag: "Highly Creative"
   },
   1.5: {
     description: "Extreme Temperature (T = 1.5) - Wildly random. Often returns nonsensical concepts, grammar errors, or bizarre combinations.",
-    idea: "A decentralized hyper-local tokenized delivery service that leases trained carrier pigeons to transport organic, blockchain-verified tea leaves to users living in remote architectural treehouses in Northern Iceland.",
+    idea: "A product manager builds the banana-powered rocket roadmap consensus blockchain cookie.",
     reliability: 5,
     creativity: 100,
     tag: "Chaotic / Hallucinating"
@@ -53,7 +52,7 @@ export default function TemperaturePlayground() {
   const [temperature, setTemperature] = useState(0.7)
 
   // Custom Mode State
-  const [customPrompt, setCustomPrompt] = useState(() => localStorage.getItem('temp_custom_prompt') || 'Suggest a product marketing slogan for our new pet app.')
+  const [customPrompt, setCustomPrompt] = useState(() => localStorage.getItem('temp_custom_prompt') || 'A product manager builds the')
 
   // Save states to localStorage
   useEffect(() => {
@@ -80,13 +79,20 @@ export default function TemperaturePlayground() {
   const generateResponseForTemp = (prompt, temp) => {
     if (!prompt || !prompt.trim()) return "Please enter a prompt above to generate output..."
     const p = prompt.trim()
+    const isDefaultPrompt = p.toLowerCase().includes("product manager builds")
     
     if (temp === 0.0) {
-      return `[Deterministic Choice (T=0.0)]\nFor prompt: "${p}"\n\nOptimal logical path selection:\n1. Execute query matching on "${p}".\n2. Output standard structured analysis.\n3. Complete process execution. (Zero variance, highest probability tokens selected).`
+      return isDefaultPrompt 
+        ? "A product manager builds the product roadmap."
+        : `[Deterministic Choice (T=0.0)]\nFor prompt: "${p}"\n\nOptimal logical path selection:\n- Always output highest-probability tokens. (Zero variance, completely deterministic).`
     } else if (temp === 0.7) {
-      return `[Balanced Path (T=0.7)]\nHere's a standard response for: "${p}"\n\nWe could approach this by designing a system that handles "${p}" in a modular way. This balances predictable features with a slight variety in language formatting, making it ideal for standard conversational assistants.`
+      return isDefaultPrompt
+        ? "A product manager builds the user-centric roadmap to align cross-functional engineering teams."
+        : `[Balanced Path (T=0.7)]\nFor prompt: "${p}"\n\nStandard response balancing reliability and fluency. Small variations in token choices will occur across runs.`
     } else { // 1.5
-      return `[Chaotic Softmax (T=1.5)]\nWhoa! "${p}" meets carrier-pigeon blockchain consensus! 🚀\n\nWe shall route "${p.split(' ').reverse().join(' ')}" through a hyper-localized treehouse network in Northern Iceland. Expected entropic outcome: 99.8% wild hallucination state! 🌌`
+      return isDefaultPrompt
+        ? "A product manager builds the banana-powered rocket roadmap consensus blockchain cookie."
+        : `[Chaotic Softmax (T=1.5)]\nWhoa! "${p}" meets carrier-pigeon blockchain consensus! 🚀\n\nWe shall route "${p.split(' ').reverse().join(' ')}" through a hyper-localized treehouse network. Expected entropic outcome: 99.8% wild hallucination state! 🌌`
     }
   }
 
@@ -104,6 +110,25 @@ export default function TemperaturePlayground() {
           notes="Explain that Temperature alters the shape of the token probability distribution. At Temp=0, we perform 'greedy decoding' (always picking the top word). As temperature increases, the model flattens the distribution, giving lower-probability words a statistical chance of being chosen. Highlight that Temp > 1.2 is rarely useful in production."
           exercise="Ask a student to pick temperature 0 and generate a startup idea twice. Note that it will be EXACTLY the same. Then change it to 1.0 and show how it changes every time."
         />
+
+        {/* Concept Explanation Block */}
+        <div className="bg-zinc-900/40 border border-zinc-800 rounded-xl p-5 mt-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-brandPurple/5 rounded-full blur-2xl pointer-events-none" />
+          <h3 className="text-xs uppercase font-mono font-bold tracking-widest text-brandPurple bg-brandPurple/10 border border-brandPurple/20 px-2 py-0.5 rounded w-fit">
+            Concept Explanation & Unified Example
+          </h3>
+          <p className="text-zinc-300 text-sm mt-3 leading-relaxed">
+            <strong>Temperature:</strong> A parameter that controls how random or creative the model's token choices are. At low temperatures (e.g., T = 0.0), the model is deterministic—always choosing the most mathematically probable token. As temperature increases, the probability distribution is flattened, allowing lower-probability words a statistical chance of being picked.
+          </p>
+          <div className="mt-4 border-t border-zinc-800/80 pt-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <span className="text-zinc-400">
+              <strong>Unified Example:</strong> For the prompt <span className="font-mono text-zinc-200">"A product manager builds the"</span>:
+            </span>
+            <span className="text-brandPurple font-mono font-semibold">
+              T=0.0 → "product roadmap" | T=0.7 → "user-centric roadmap" | T=1.5 → "banana-powered rocket"
+            </span>
+          </div>
+        </div>
 
         {/* Tab Selection */}
         <div className="flex bg-zinc-950 p-1 rounded-xl border border-zinc-800 w-fit mt-6">
@@ -133,7 +158,7 @@ export default function TemperaturePlayground() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-zinc-500 font-mono text-xs uppercase">Prompt:</span>
-                  <span className="text-zinc-200 font-semibold">"Give me a startup idea."</span>
+                  <span className="text-zinc-200 font-semibold">"A product manager builds the"</span>
                 </div>
                 <span className="text-brandPurple text-xs uppercase font-mono bg-brandPurple/15 px-2 py-0.5 rounded font-bold">
                   {currentData.tag}
@@ -308,11 +333,11 @@ export default function TemperaturePlayground() {
           </div>
         )}
 
-        <KarpathyInsight text="Temperature simply scales the logits (raw logs of predictions) before they pass through the softmax layer. Dividing by a low number accentuates the peaks (making outputs highly predictable); dividing by a high number flattens the peaks (inducing random word choices)." />
-
         <PMInsight 
-          decision="Temperature is a critical product decision. Never leave it at the model default without testing. High temperature creates delightful creative content but will break JSON schemas and structured outputs in production."
-          impact="Reduce temperature to 0 when building API integrations, data parsing, or strict automation workflows. Set it between 0.5 and 0.8 for marketing copywriting or interactive chat features."
+          concept="Sampling Parameterization"
+          source="Holtzman et al., 'The Curious Case of Neural Text Degeneration' (ICLR 2020)"
+          quote="Standard decoding maximizes likelihood, leading to repetitive, bland loops. Nucleus sampling (top-p) and temperature parameterize the tail probability to balance coherence and creativity."
+          takeaway="Setting parameters is a core product decision, not just an engineering tweak. Set Temperature = 0.0 and Top-P = 1.0 for deterministic business flows (RAG, code, JSON schema parsing). Set Temperature = 0.7+ for creative copywriting or conversational games."
         />
       </div>
 

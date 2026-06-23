@@ -2,21 +2,20 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Compass, Sparkles, RefreshCw, GitPullRequest, Layers, Play } from 'lucide-react'
 import { motion } from 'framer-motion'
 import PMInsight from '../components/PMInsight'
-import KarpathyInsight from '../components/KarpathyInsight'
 import PresenterNotes from '../components/PresenterNotes'
 import { useAppStore } from '../store/useAppStore'
 
 const initialWords = [
-  { name: 'King', x: 20, y: 80, category: 'royal_male' },
-  { name: 'Prince', x: 25, y: 70, category: 'royal_male' },
-  { name: 'Queen', x: 80, y: 80, category: 'royal_female' },
-  { name: 'Princess', x: 75, y: 70, category: 'royal_female' },
-  { name: 'Man', x: 20, y: 30, category: 'gender_male' },
-  { name: 'Woman', x: 80, y: 30, category: 'gender_female' },
-  { name: 'CEO', x: 45, y: 65, category: 'work' },
-  { name: 'Founder', x: 50, y: 60, category: 'work' },
-  { name: 'Engineer', x: 45, y: 15, category: 'tech' },
-  { name: 'Developer', x: 50, y: 10, category: 'tech' },
+  { name: 'Product', x: 20, y: 75, category: 'pm_core' },
+  { name: 'Manager', x: 24, y: 72, category: 'pm_core' },
+  { name: 'Roadmap', x: 22, y: 82, category: 'pm_core' },
+  { name: 'PRD', x: 18, y: 68, category: 'pm_core' },
+  { name: 'Engineer', x: 78, y: 22, category: 'tech_team' },
+  { name: 'Developer', x: 82, y: 18, category: 'tech_team' },
+  { name: 'Code', x: 80, y: 28, category: 'tech_team' },
+  { name: 'Backlog', x: 76, y: 32, category: 'tech_team' },
+  { name: 'Banana', x: 50, y: 55, category: 'unrelated' },
+  { name: 'Monkey', x: 52, y: 50, category: 'unrelated' },
 ]
 
 const clusterTickets = [
@@ -167,7 +166,6 @@ export default function EmbeddingExplorer() {
       setSelectedWord(wordName)
     }
   }
-
   const triggerArithmeticDemo = () => {
     setArithmeticStep(1)
     setTimeout(() => setArithmeticStep(2), 2000)
@@ -180,7 +178,6 @@ export default function EmbeddingExplorer() {
     setSelectedWord(null)
     setArithmeticStep(0)
   }
-
   const neighbors = getNearestNeighbors(activeTab === 'custom')
 
   return (
@@ -195,6 +192,25 @@ export default function EmbeddingExplorer() {
           notes="Explain that embeddings are high-dimensional vectors (often 1536 dimensions) that represent semantic similarity. We map these to 2D using algorithms like t-SNE or UMAP. Show the famous King - Man + Woman = Queen relationship. Explain that similar items cluster naturally."
           exercise="Select the 'Support Tickets' mode. Ask the PMs: 'How would you automatically route incoming customer emails to the correct team without writing 1,000 regex statements?' Show clustering in action."
         />
+
+        {/* Concept Explanation Block */}
+        <div className="bg-zinc-900/40 border border-zinc-800 rounded-xl p-5 mt-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-brandPurple/5 rounded-full blur-2xl pointer-events-none" />
+          <h3 className="text-xs uppercase font-mono font-bold tracking-widest text-brandPurple bg-brandPurple/10 border border-brandPurple/20 px-2 py-0.5 rounded w-fit">
+            Concept Explanation & Unified Example
+          </h3>
+          <p className="text-zinc-300 text-sm mt-3 leading-relaxed">
+            <strong>Embeddings:</strong> AI models represent the meaning of words by converting them into long lists of numbers called <strong>Vectors</strong> (often 1536+ dimensions). In this numerical space, words with similar meanings (like "Product", "Manager", and "Roadmap") are placed very close to one another, while unrelated words (like "Banana") are placed far away. We can even perform semantic math on these vectors.
+          </p>
+          <div className="mt-4 border-t border-zinc-800/80 pt-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <span className="text-zinc-400">
+              <strong>Unified Example:</strong> PM core concepts cluster naturally together:
+            </span>
+            <span className="text-brandPurple font-mono font-semibold">
+              Product + Manager + Strategy = Roadmap
+            </span>
+          </div>
+        </div>
 
         {/* Tab Selection */}
         <div className="flex bg-zinc-950 p-1 rounded-xl border border-zinc-800 w-fit mt-6">
@@ -400,19 +416,19 @@ export default function EmbeddingExplorer() {
                 <div className="absolute top-4 left-4 bg-zinc-900/90 border border-zinc-800 px-4 py-3 rounded-xl space-y-1 font-mono text-xs max-w-sm pointer-events-none">
                   <span className="text-zinc-500 uppercase text-[9px] block">Semantic Arithmetic</span>
                   <div className="flex items-center gap-2 text-zinc-200">
-                    <span className={arithmeticStep >= 1 ? 'text-brandCyan font-bold' : ''}>King</span>
-                    <span>-</span>
-                    <span className={arithmeticStep >= 2 ? 'text-brandPurple font-bold' : ''}>Man</span>
+                    <span className={arithmeticStep >= 1 ? 'text-brandCyan font-bold' : ''}>Product</span>
                     <span>+</span>
-                    <span className={arithmeticStep >= 3 ? 'text-brandAmber font-bold' : ''}>Woman</span>
+                    <span className={arithmeticStep >= 2 ? 'text-brandPurple font-bold' : ''}>Manager</span>
+                    <span>+</span>
+                    <span className={arithmeticStep >= 3 ? 'text-brandAmber font-bold' : ''}>Strategy</span>
                     <span>=</span>
-                    <span className={arithmeticStep >= 4 ? 'text-brandGreen font-bold' : ''}>Queen</span>
+                    <span className={arithmeticStep >= 4 ? 'text-brandGreen font-bold' : ''}>Roadmap</span>
                   </div>
                   <div className="text-[10px] text-zinc-400 mt-2">
-                    {arithmeticStep === 1 && "Start at King coordinate [20, 80]"}
-                    {arithmeticStep === 2 && "Subtract Man direction (subtracted male vector)"}
-                    {arithmeticStep === 3 && "Add Woman direction (moving horizontally across)"}
-                    {arithmeticStep === 4 && "Resolves closest to Queen coordinate [80, 80]!"}
+                    {arithmeticStep === 1 && "Start at Product coordinate [20, 75]"}
+                    {arithmeticStep === 2 && "Add Manager direction (adding manager context)"}
+                    {arithmeticStep === 3 && "Add Strategy direction (moving semantically closer to high-level goals)"}
+                    {arithmeticStep === 4 && "Resolves closest to Roadmap coordinate [22, 82]!"}
                   </div>
                 </div>
               )}
@@ -544,11 +560,11 @@ export default function EmbeddingExplorer() {
           </div>
         </div>
 
-        <KarpathyInsight text="Embeddings are the fundamental language of neural networks. By representing words as hundreds of numbers, models capture the subtle dimensions of human meaning (e.g. gender, royalty, tense, status) and project them into mathematical fields." />
-
         <PMInsight 
-          decision="Embeddings power search, RAG, recommendation, and classification models. Instead of matching exact keywords (which misses context), embed the customer query to find items with similar coordinates."
-          impact="Zero-shot routing. You can route customer support tickets, search catalogs, or group feedback automatically without manual labeling or complex rules engines."
+          concept="Semantic Vector Spaces"
+          source="Mikolov et al., 'Distributed Representations of Words and Phrases and their Compositionality' (NeurIPS 2013)"
+          quote="Word representations can capture syntactic and semantic regularities. For example, vector('King') - vector('Man') + vector('Woman') results in a vector closest to Queen."
+          takeaway="Embeddings map meaning to math. PMs should utilize embeddings for semantic search, recommendation engines, and user clustering. Because embeddings capture bias present in the training set (e.g., gender roles), PMs must design bias-mitigation filters when matching candidate resumes or recommending content."
         />
       </div>
 

@@ -2,30 +2,29 @@ import React, { useState, useEffect } from 'react'
 import { Eye, Info, Sparkles, Play } from 'lucide-react'
 import { motion } from 'framer-motion'
 import PMInsight from '../components/PMInsight'
-import KarpathyInsight from '../components/KarpathyInsight'
 import PresenterNotes from '../components/PresenterNotes'
 import { useAppStore } from '../store/useAppStore'
 
 const sentenceData = {
   large: {
-    words: ["The", "trophy", "didn't", "fit", "into", "the", "suitcase", "because", "it", "was", "too", "large."],
+    words: ["A", "product", "manager", "builds", "the", "roadmap", "because", "it", "is", "essential."],
     attentionFromIt: {
-      "trophy": 82,
-      "suitcase": 10,
-      "fit": 4,
-      "large.": 4
+      "roadmap": 85,
+      "product": 5,
+      "manager": 4,
+      "essential.": 6
     },
-    explanation: "Because it was 'too large', the model correctly associates the pronoun 'it' with the 'trophy'. Large things fail to fit inside container items."
+    explanation: "Because it is 'essential', the model correctly associates the pronoun 'it' with the 'roadmap'. Roadmaps are essential artifacts in building products."
   },
   small: {
-    words: ["The", "trophy", "didn't", "fit", "into", "the", "suitcase", "because", "it", "was", "too", "small."],
+    words: ["A", "product", "manager", "builds", "the", "roadmap", "because", "she", "is", "capable."],
     attentionFromIt: {
-      "suitcase": 78,
-      "trophy": 12,
-      "fit": 6,
-      "small.": 4
+      "manager": 80,
+      "product": 10,
+      "roadmap": 4,
+      "capable.": 6
     },
-    explanation: "Because it was 'too small', the model shifts its attention! The container (the 'suitcase') must be too small to accommodate the trophy."
+    explanation: "Because she is 'capable', the model shifts its attention! The pronoun 'she' connects back to the subject 'manager' who drives the product creation."
   }
 }
 
@@ -103,7 +102,7 @@ export default function AttentionSimulator() {
   // Get attention weight between current word and hovered word
   const getAttentionWeight = (targetWord) => {
     if (activeTab === 'guided') {
-      if (hoveredWord === "it") {
+      if (hoveredWord === "it" || hoveredWord === "she") {
         return currentData.attentionFromIt[targetWord] || 0
       }
       if (hoveredWord === targetWord) return 100
@@ -118,7 +117,7 @@ export default function AttentionSimulator() {
 
   const activeWords = activeTab === 'guided' ? currentData.words : parsedCustomWords
   const activeAttentionMap = activeTab === 'guided' 
-    ? (hoveredWord === "it" ? currentData.attentionFromIt : {})
+    ? (hoveredWord === "it" || hoveredWord === "she" ? currentData.attentionFromIt : {})
     : (hoveredWord ? getCustomAttentionWeights(parsedCustomWords, hoveredWord) : {})
 
   return (
@@ -133,6 +132,25 @@ export default function AttentionSimulator() {
           notes="Explain the concept of 'Self-Attention' (from the seminal 2017 paper 'Attention Is All You Need'). This solves the memory issue of RNNs. In a sentence, every word looks at every other word to update its contextual meaning. Toggling between 'large' and 'small' demonstrates how the embedding for the word 'it' changes based on the adjective at the end."
           exercise="Ask PMs: Hover over 'it' on both sentences. Point out how the thickest connection changes. Why is this hard for older software? It requires a deep world model (physics of boxes and trophies)."
         />
+
+        {/* Concept Explanation Block */}
+        <div className="bg-zinc-900/40 border border-zinc-800 rounded-xl p-5 mt-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-brandPurple/5 rounded-full blur-2xl pointer-events-none" />
+          <h3 className="text-xs uppercase font-mono font-bold tracking-widest text-brandPurple bg-brandPurple/10 border border-brandPurple/20 px-2 py-0.5 rounded w-fit">
+            Concept Explanation & Unified Example
+          </h3>
+          <p className="text-zinc-300 text-sm mt-3 leading-relaxed">
+            <strong>Self-Attention:</strong> The breakthrough mechanism (introduced in the 2017 paper <em>"Attention Is All You Need"</em>) that allows models to process word dependencies in parallel. In any sentence, each word evaluates and "pays attention" to every other word to build its contextual meaning. This enables the model to resolve ambiguous pronouns (like linking "it" to "roadmap" or "she" to "manager").
+          </p>
+          <div className="mt-4 border-t border-zinc-800/80 pt-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <span className="text-zinc-400">
+              <strong>Unified Example:</strong> Compare how pronouns shift attention focus based on adjectives:
+            </span>
+            <span className="text-brandPurple font-mono font-semibold">
+              "it" → roadmap (85%) | "she" → manager (80%)
+            </span>
+          </div>
+        </div>
 
         {/* Tab Selection */}
         <div className="flex bg-zinc-950 p-1 rounded-xl border border-zinc-800 w-fit mt-6">
@@ -163,7 +181,7 @@ export default function AttentionSimulator() {
                 clause === 'large' ? 'bg-brandPurple text-white' : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
-              "...because it was too large."
+              "...because it is essential."
             </button>
             <button
               onClick={() => setClause('small')}
@@ -171,7 +189,7 @@ export default function AttentionSimulator() {
                 clause === 'small' ? 'bg-brandPurple text-white' : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
-              "...because it was too small."
+              "...because she is capable."
             </button>
           </div>
         ) : (
@@ -198,7 +216,7 @@ export default function AttentionSimulator() {
                   Interactive Attention Links
                 </span>
                 <span className="text-[10px] text-brandCyan bg-brandCyan/10 px-2 py-0.5 rounded font-mono font-bold animate-pulse">
-                  {activeTab === 'guided' ? 'Hover over the word "it"' : 'Hover over ANY word below'}
+                  {activeTab === 'guided' ? 'Hover over the word "it" or "she"' : 'Hover over ANY word below'}
                 </span>
               </div>
 
@@ -208,7 +226,7 @@ export default function AttentionSimulator() {
                   const cleanWord = word.replace(/[.,'"]/g, "")
                   const attentionVal = getAttentionWeight(cleanWord)
                   const isHovered = hoveredWord === cleanWord
-                  const isIt = activeTab === 'guided' ? (cleanWord === 'it') : isHovered
+                  const isIt = activeTab === 'guided' ? (cleanWord === 'it' || cleanWord === 'she') : isHovered
                   
                   return (
                     <div 
@@ -287,11 +305,11 @@ export default function AttentionSimulator() {
           </div>
         </div>
 
-        <KarpathyInsight text="The core of the transformer is attention. Words do not process in isolation. Through query, key, and value dot-products, each word actively scans the surrounding text, shifting its vector direction to incorporate context." />
-
         <PMInsight 
-          decision="Attention determines relevance, but it has limits (quadratic scaling complexity). In prompt engineering, place critical guidelines at the very beginning or the very end of your prompt, as models pay less attention to the middle."
-          impact="Need to fit a long conversation? Summarize or prune the middle parts of the dialogue. The model maintains higher accuracy when context fits within its peak attention bands."
+          concept="Self-Attention Mechanism"
+          source="Jay Alammar, 'The Illustrated Transformer' (2018)"
+          quote="Attention allows the model to focus on other words in the input sequence that help compile a better encoding for the word it is currently processing."
+          takeaway="The quadratic cost of self-attention is the primary driver of context window limits. For PMs, this means longer conversations or uploaded documents exponentially increase latency and cost. Understanding newer architectures like FlashAttention or linear attention is vital for long-context products."
         />
       </div>
 

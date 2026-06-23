@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Sliders, Play, RotateCcw, ArrowRight, Sparkles, Binary, Check } from 'lucide-react'
 import PMInsight from '../components/PMInsight'
-import KarpathyInsight from '../components/KarpathyInsight'
 import PresenterNotes from '../components/PresenterNotes'
 import { useAppStore } from '../store/useAppStore'
 
@@ -395,11 +394,11 @@ export default function ResponseGenerator() {
           </div>
         </div>
 
-        <KarpathyInsight text="LLMs are auto-regressive next-token generators. The output of pass N becomes part of the input context for pass N+1. This is why generation speed depends directly on output token count, not input prompt size." />
-
         <PMInsight 
-          decision="Response generation is sequential. When designing user experiences, always stream the response chunk-by-chunk (using Server-Sent Events). Waiting for the full generation blocks the UI and increases perceived latency by 10x."
-          impact="Set max_tokens caps defensively on model calls. A rogue generation loop can multiply your API costs and time out client sockets."
+          concept="Auto-Regressive Inference"
+          source="OpenAI Engineering Blog, 'Optimizing LLM Inference' (2023)"
+          quote="In LLM generation, the model runs auto-regressively. Each token generated requires a full pass through the model's weights, making inference highly sensitive to GPU memory access speeds."
+          takeaway="PMs must track two distinct speed metrics: Time-to-First-Token (TTFT) and Inter-Token Latency (ITL). While TTFT determines perceived responsiveness, ITL determines how fast long outputs print. Use streaming UX and speculative decoding to hide latency."
         />
       </div>
 

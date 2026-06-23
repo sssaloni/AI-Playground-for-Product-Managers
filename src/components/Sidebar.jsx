@@ -4,7 +4,7 @@ import {
   History, Sparkles, Binary, Sliders, Hash, Map, 
   Compass, AlertTriangle, Eye, RefreshCw, Presentation, GraduationCap,
   Layers, Hammer, Award, HelpCircle, Play, Database,
-  ChevronLeft, ChevronRight
+  ChevronLeft, ChevronRight, LogOut
 } from 'lucide-react'
 
 const sections = [
@@ -33,7 +33,9 @@ export default function Sidebar() {
     completedSections, 
     presenterMode, 
     togglePresenterMode, 
-    resetProgress 
+    resetProgress,
+    isPresenter,
+    logout
   } = useAppStore()
 
   const [isCollapsed, setIsCollapsed] = useState(() => localStorage.getItem('sidebar-collapsed') === 'true')
@@ -161,17 +163,19 @@ export default function Sidebar() {
       {/* Sidebar Footer Controls */}
       {isCollapsed ? (
         <div className="p-2 border-t border-zinc-800 bg-zinc-950/80 flex flex-col items-center gap-3 py-4">
-          <button
-            onClick={togglePresenterMode}
-            className={`p-2 rounded-lg transition-all duration-200 cursor-pointer ${
-              presenterMode 
-                ? 'bg-brandAmber/15 text-brandAmber border border-brandAmber/30 glow-amber' 
-                : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:bg-zinc-850'
-            }`}
-            title={`Switch to ${presenterMode ? 'Student' : 'Presenter'} Mode`}
-          >
-            <Presentation className="w-4 h-4" />
-          </button>
+          {isPresenter && (
+            <button
+              onClick={togglePresenterMode}
+              className={`p-2 rounded-lg transition-all duration-200 cursor-pointer ${
+                presenterMode 
+                  ? 'bg-brandAmber/15 text-brandAmber border border-brandAmber/30 glow-amber' 
+                  : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:bg-zinc-850'
+              }`}
+              title={`Switch to ${presenterMode ? 'Student' : 'Presenter'} Mode`}
+            >
+              <Presentation className="w-4 h-4" />
+            </button>
+          )}
 
           <button
             onClick={() => {
@@ -184,26 +188,40 @@ export default function Sidebar() {
           >
             <RefreshCw className="w-4 h-4" />
           </button>
+
+          <button
+            onClick={() => {
+              if (confirm("Are you sure you want to log out?")) {
+                logout()
+              }
+            }}
+            className="p-2 text-zinc-500 hover:text-red-450 rounded hover:bg-red-950/10 transition-colors cursor-pointer"
+            title="Log Out"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
         </div>
       ) : (
         <div className="p-4 border-t border-zinc-800 bg-zinc-950/80 space-y-2.5">
           {/* Presenter mode toggle */}
-          <button
-            onClick={togglePresenterMode}
-            className={`w-full flex items-center justify-between px-3 py-2 rounded-lg border text-xs font-semibold transition-all duration-200 cursor-pointer ${
-              presenterMode 
-                ? 'bg-brandAmber/15 text-brandAmber border-brandAmber/30 glow-amber' 
-                : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:bg-zinc-850'
-            }`}
-          >
-            <div className="flex items-center gap-2">
-              <Presentation className="w-4 h-4" />
-              <span>Workshop Mode</span>
-            </div>
-            <span className="text-[10px] uppercase bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded font-mono">
-              {presenterMode ? 'Presenter' : 'Student'}
-            </span>
-          </button>
+          {isPresenter && (
+            <button
+              onClick={togglePresenterMode}
+              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg border text-xs font-semibold transition-all duration-200 cursor-pointer ${
+                presenterMode 
+                  ? 'bg-brandAmber/15 text-brandAmber border-brandAmber/30 glow-amber' 
+                  : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:bg-zinc-850'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <Presentation className="w-4 h-4" />
+                <span>Workshop Mode</span>
+              </div>
+              <span className="text-[10px] uppercase bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded font-mono">
+                {presenterMode ? 'Presenter' : 'Student'}
+              </span>
+            </button>
+          )}
 
           {/* Reset progress */}
           <button
@@ -216,6 +234,19 @@ export default function Sidebar() {
           >
             <RefreshCw className="w-3 h-3" />
             <span>Reset Workshop State</span>
+          </button>
+
+          {/* Logout */}
+          <button
+            onClick={() => {
+              if (confirm("Are you sure you want to log out?")) {
+                logout()
+              }
+            }}
+            className="w-full flex items-center gap-2 justify-center px-3 py-2 text-zinc-500 hover:text-red-450 hover:bg-red-950/10 text-xs rounded transition-colors cursor-pointer border border-zinc-800/80 hover:border-red-950/30"
+          >
+            <LogOut className="w-3 h-3" />
+            <span>Log Out</span>
           </button>
         </div>
       )}

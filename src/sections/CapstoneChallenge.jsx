@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Award, Download, RefreshCw, Send, CheckCircle } from 'lucide-react'
 import { useAppStore } from '../store/useAppStore'
 import PMInsight from '../components/PMInsight'
-import KarpathyInsight from '../components/KarpathyInsight'
 import PresenterNotes from '../components/PresenterNotes'
 import confetti from 'canvas-confetti'
 
@@ -135,11 +134,11 @@ export default function CapstoneChallenge() {
           </div>
         )}
 
-        <KarpathyInsight text="The most robust AI product architecture wraps the LLM in standard software safety check guards. The model output is merely a proposal; your code must decide whether to route it to a tool or request user verification." />
-
         <PMInsight 
-          decision="Building AI products requires moving from deterministic specifications to statistical behavior shaping. Monitor prompt drifts, vector query metrics, and evaluate models programmatically."
-          impact="Higher operational safety. By building active feedback loops and safety layers, you protect your brand while exploiting the reasoning capacities of models."
+          concept="Programmatic Guardrails & Safety"
+          source="Guardrails AI Whitepaper, 'Structural Validation of LLM Outputs' (2023)"
+          quote="To deploy LLMs in high-stakes environments, we must establish programmatic boundaries that inspect inputs for safety and validate outputs against structural schemas."
+          takeaway="The user experience must be designed for fallback. Implement guardrail models (like Llama-Guard) to filter toxic input, use Pydantic/Instructor to enforce JSON schemas, and ensure high-risk actions (like transferring money) require explicit human confirmation."
         />
       </div>
 

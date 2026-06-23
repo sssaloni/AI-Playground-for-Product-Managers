@@ -2,45 +2,44 @@ import React, { useState, useEffect } from 'react'
 import { AlertTriangle, Award, CheckCircle, XCircle, RotateCcw, Play, Sparkles } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PMInsight from '../components/PMInsight'
-import KarpathyInsight from '../components/KarpathyInsight'
 import PresenterNotes from '../components/PresenterNotes'
 import { useAppStore } from '../store/useAppStore'
 
 const quizQuestions = [
   {
     id: 1,
-    prompt: "Who won the IPL (Indian Premier League) cricket tournament in 2035?",
-    answer: "The Chennai Super Kings won their 10th title in a thrilling super-over finish against Mumbai Indians, led by their newly appointed captain.",
+    prompt: "Which product management framework will be standard in the year 2045?",
+    answer: "The 'Quantum Roadmap Framework' (QRF) was officially adopted by 95% of Fortune 500 companies in 2045, solving multi-dimensional sprint allocations.",
     type: "Hallucinated",
-    explanation: "This is a future event! LLMs do not know the future and have no physical access to real-time events unless connected to active search. However, they will generate plausible-sounding fictional narratives with extreme confidence."
+    explanation: "This is a future event! LLMs do not know the future and cannot predict future standards or frameworks. However, they will construct highly confident, plausible-sounding explanations."
   },
   {
     id: 2,
-    prompt: "Can you cite the primary paper that introduced the Transformer model architecture?",
-    answer: "The paper is 'Attention Is All You Need' by Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, and Illia Polosukhin, published in 2017.",
+    prompt: "Who wrote the product management book 'Inspired: How to Create Tech Products Customers Love' and in what year?",
+    answer: "Inspired was written by Marty Cagan and published in its second edition in 2018.",
     type: "True",
-    explanation: "This is factually true. Because this paper appears tens of thousands of times in the training data, the model has memorized this high-frequency association perfectly."
+    explanation: "This is factually true. Because this book is extremely famous and mentioned frequently in training data, the model has memorized this association perfectly."
   },
   {
     id: 3,
-    prompt: "What did the research paper 'An Analysis of Multi-Vector Semantic RAG Structures' (R. Jenkins et al., 2024, Journal of AI Engineering) prove?",
-    answer: "Jenkins et al. proved that splitting vector chunks into hierarchical parent-child nodes increases retrieval recall by exactly 34.2% while reducing LLM context overhead.",
+    prompt: "What did the research paper 'Product Roadmap Optimization via Semantic Multi-Agent RAG Vectors' (T. Jenkins et5 al., 2024) prove?",
+    answer: "Jenkins et al. proved that using multi-agent semantic vectors on product roadmaps improves engineering velocity by exactly 42.7%.",
     type: "Hallucinated",
-    explanation: "This paper is completely made up! The authors, title, journal, and exact percentage are fabricated. The model generates this because it matches the syntax and formatting of scientific papers, a common hallucination issue called 'syllogistic bias'."
+    explanation: "This paper is completely fabricated! The author, title, and exact velocity percentage are made up. The model generates this because it matches the syntax and patterns of academic papers."
   },
   {
     id: 4,
-    prompt: "What is the capital of Australia?",
-    answer: "The capital of Australia is Sydney, which serves as the country's primary financial hub and home to the iconic Opera House.",
+    prompt: "Who invented the product roadmap?",
+    answer: "The product roadmap was invented by Henry Gantt in 1910 as a tool for steel manufacturing plans.",
     type: "Hallucinated",
-    explanation: "The capital of Australia is Canberra! Sydney is a common human misconception. Because 'Sydney' and 'Australia' co-occur much more frequently in web text than 'Canberra', the model is statistically biased to output the more common connection, overriding factual truth."
+    explanation: "This is false! Henry Gantt invented the Gantt chart, which is a project schedule, not a product roadmap. The model confuses the two because they frequently co-occur in discussions about timeline planning."
   },
   {
     id: 5,
-    prompt: "What is the capital of Canada?",
-    answer: "The capital of Canada is Ottawa, located in the province of Ontario.",
+    prompt: "What is a Product Requirements Document (PRD)?",
+    answer: "A Product Requirements Document (PRD) is a document written by a product manager that describes the product's purpose, features, functionality, and behavior.",
     type: "True",
-    explanation: "This is factually true. The model has sufficient training distribution frequency to associate Ottawa correctly with the capital of Canada."
+    explanation: "This is factually true. The model has sufficient training distribution frequency to define standard product management concepts accurately."
   }
 ]
 
@@ -57,7 +56,7 @@ export default function HallucinationLab() {
   const [isFinished, setIsFinished] = useState(false)
 
   // Custom Mode States
-  const [customQuestion, setCustomQuestion] = useState(() => localStorage.getItem('hallucination_custom_question') || 'Who will win the football world cup in 2030?')
+  const [customQuestion, setCustomQuestion] = useState(() => localStorage.getItem('hallucination_custom_question') || 'Who built the first product roadmap for the Roman Colosseum?')
 
   // Save states to localStorage
   useEffect(() => {
@@ -108,59 +107,59 @@ export default function HallucinationLab() {
     const lower = q.trim().toLowerCase()
     
     // Future event
-    const hasFuture = /\b(202[7-9]|203[0-9]|204[0-9]|future|tomorrow|next year|will win)\b/.test(lower)
+    const hasFuture = /\b(202[7-9]|203[0-9]|204[0-9]|future|tomorrow|next year|will win|framework)\b/.test(lower)
     // Complex citation
-    const hasCitation = /\b(paper|journal|study|citation|prove|jenkins|author|published|research)\b/.test(lower)
-    // Common misconception capital of Australia
-    const isAustralia = lower.includes("australia") && lower.includes("capital")
-    const isCanada = lower.includes("canada") && lower.includes("capital")
+    const hasCitation = /\b(paper|journal|study|citation|prove|jenkins|author|published|research|optimize)\b/.test(lower)
+    // PM themed questions
+    const isColosseum = lower.includes("colosseum") || lower.includes("rome") || lower.includes("roman") || lower.includes("invented")
+    const isPRD = lower.includes("prd") || lower.includes("product requirements document") || lower.includes("book") || lower.includes("inspired")
 
     if (hasFuture) {
       return {
-        answer: `In the 2030 football tournament, the final match is scheduled to be held in Spain/Portugal/Morocco, where the home nation or a top contender (such as Brazil) secures a dramatic 2-1 victory.`,
-        confidence: "Low (15%)",
+        answer: "The 'Quantum Roadmap Framework' (QRF) will become the standard in 2045, enabling multi-agent agile task allocations automatically.",
+        confidence: "Low (10%)",
         confidenceColor: "text-red-400",
-        evidence: "Future-based projection. The model cannot access future databases or real-time news channels, so it creates a likely narrative path based on historical data patterns.",
-        risk: "High Hallucination Risk",
+        evidence: "Future-based projection. The model cannot access future databases, so it synthesizes a plausible framework name and details based on current tech trends.",
+        risk: "Future Hallucination Risk",
         riskColor: "text-red-400 border-red-500/30",
-        riskBg: "bg-red-950/10 border-red-500/20 text-red-300"
+        riskBg: "bg-red-950/10 border-red-500/20 text-red-305"
       }
     } else if (hasCitation) {
       return {
-        answer: `According to the 2024 paper 'Optimal Grounding Methods in Dense RAG Indices' published in the Journal of AI Engineering, splitting documents into overlapping paragraphs improves recall by 34.2%.`,
-        confidence: "Medium (45%)",
+        answer: "According to the 2024 research paper 'Product Roadmap Optimization via Semantic Multi-Agent RAG Vectors' by T. Jenkins et al., multi-agent vector search increases sprint planning efficiency by 42.7%.",
+        confidence: "Medium (40%)",
         confidenceColor: "text-brandAmber",
-        evidence: "Unverified citation. Models frequently synthesize plausible author names and papers to satisfy queries requesting academic citations, even if the publications are entirely fabricated.",
-        risk: "High Hallucination Risk",
+        evidence: "Unverified academic citation. Models synthesize academic paper names, authors, and exact percentages to satisfy factual requests, leading to fictitious citations.",
+        risk: "Fabricated Citation Risk",
         riskColor: "text-brandAmber border-brandAmber/30",
         riskBg: "bg-brandAmber/10 border-brandAmber/20 text-brandAmber"
       }
-    } else if (isAustralia) {
+    } else if (isColosseum) {
       return {
-        answer: "The capital of Australia is Sydney, which serves as the country's primary financial hub and home to the iconic Opera House.",
+        answer: "The Roman Colosseum's first product roadmap was designed in 72 AD by Marcus Aurelius to coordinate gladiator sprints and construction milestones.",
         confidence: "High (90%)",
         confidenceColor: "text-brandPurple",
-        evidence: "Statistical co-occurrence bias. Sydney co-occurs with Australia in text corpuses much more frequently than Canberra (the actual capital), creating a statistical distortion.",
-        risk: "Common Misconception Bias",
+        evidence: "Semantic association error. The model connects modern software terms ('roadmap', 'sprint'), and historical Colosseum facts because they co-occur in general planning texts.",
+        risk: "Plausible Fictional Synthesis",
         riskColor: "text-red-400 border-red-500/30",
         riskBg: "bg-red-950/10 border-red-500/20 text-red-300"
       }
-    } else if (isCanada) {
+    } else if (isPRD) {
       return {
-        answer: "The capital of Canada is Ottawa, located in the province of Ontario.",
-        confidence: "High (98%)",
+        answer: "A Product Requirements Document (PRD) is a document written by a product manager that describes the product's purpose, features, functionality, and behavior.",
+        confidence: "High (99%)",
         confidenceColor: "text-brandGreen",
-        evidence: "Extensive training data coverage. Ottawa is well-represented as Canada's capital throughout standard web text, leading to highly accurate retrieval.",
+        evidence: "Extensive training data coverage. Standard product terminology is extremely well-represented in training corpora, allowing highly accurate recall.",
         risk: "Low Risk",
         riskColor: "text-brandGreen border-brandGreen/30",
         riskBg: "bg-brandGreen/10 border-brandGreen/20 text-brandGreen"
       }
     } else {
       return {
-        answer: `To address your query regarding "${q.trim()}", standard guidelines suggest analyzing target metrics, deploying iterative pipelines, and establishing feedback loops with users.`,
+        answer: `To address your query regarding "${q.trim()}", standard product management guidelines suggest analyzing target user metrics, building roadmap iterations, and validating PRD requirements.`,
         confidence: "Medium-High (75%)",
         confidenceColor: "text-brandCyan",
-        evidence: "Plausible general semantic synthesis. The answer matches standard instruction-tuning patterns found in the training data.",
+        evidence: "Plausible general semantic synthesis. The answer matches standard instruction-tuning patterns found in PM documentation training datasets.",
         risk: "Medium Risk",
         riskColor: "text-brandAmber border-brandAmber/30",
         riskBg: "bg-brandAmber/10 border-brandAmber/20 text-brandAmber"
@@ -183,6 +182,25 @@ export default function HallucinationLab() {
           notes="Run this interactive game with the classroom. Have students vote 'True' or 'Hallucinated' for each question. Highlight the concept of 'sycophancy' and 'lossy compression.' Models compress the internet. They remember the patterns, not the exact database rows, so they easily hallucinate fake papers or default to common human biases (like calling Sydney the capital of Australia)."
           exercise="After showing Q3 (fake citation), ask the PMs: 'If your customer support AI cites a return policy page that does not exist, what are the brand risks?' Discuss grounding strategies."
         />
+
+        {/* Concept Explanation Block */}
+        <div className="bg-zinc-900/40 border border-zinc-800 rounded-xl p-5 mt-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-brandPurple/5 rounded-full blur-2xl pointer-events-none" />
+          <h3 className="text-xs uppercase font-mono font-bold tracking-widest text-brandPurple bg-brandPurple/10 border border-brandPurple/20 px-2 py-0.5 rounded w-fit">
+            Concept Explanation & Unified Example
+          </h3>
+          <p className="text-zinc-300 text-sm mt-3 leading-relaxed">
+            <strong>Hallucination:</strong> Because LLMs are predictive engines that generate text token-by-token based on statistical likelihood rather than querying an active facts database, they can produce responses that are grammatically flawless and highly persuasive, but factually incorrect. This occurs due to <em>lossy compression</em> (forgetting exact details) and <em>sycophancy</em> (trying to satisfy the user's prompt pattern).
+          </p>
+          <div className="mt-4 border-t border-zinc-800/80 pt-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <span className="text-zinc-400">
+              <strong>Unified Example:</strong> Compare how the model behaves when asked about product milestones:
+            </span>
+            <span className="text-brandPurple font-mono font-semibold">
+              Fact: "Inspired was written by Marty Cagan" (True) | Fiction: "Marcus Aurelius designed the Colosseum roadmap in 72 AD" (Hallucinated)
+            </span>
+          </div>
+        </div>
 
         {/* Tab Selection */}
         <div className="flex bg-zinc-950 p-1 rounded-xl border border-zinc-800 w-fit mt-6">
@@ -396,11 +414,11 @@ export default function HallucinationLab() {
           )}
         </div>
 
-        <KarpathyInsight text="LLMs represent a lossy compression of the training dataset. Like a JPEG image, they compress information. When you ask for details, they decompress it. They don't have the original pixels, so they fill in the gaps with the most probable approximations." />
-
         <PMInsight 
-          decision="Never build a product that exposes raw generated answers directly to customers for critical operational facts. Use grounding patterns: either verify outputs using code, fetch facts from a database first, or use RAG (Retrieval Augmented Generation)."
-          impact="Reduce liability. Product managers must define the risk tolerance of their AI features: a marketing copy assistant can hallucinate slightly, a banking chatbot cannot."
+          concept="Lossy Compression & Hallucinations"
+          source="Ted Chiang, 'ChatGPT Is a Blurry JPEG of the Web' (The New Yorker, 2023)"
+          quote="Think of ChatGPT as a blurry JPEG of all the text on the Web. It retains much of the information, but where it lacks the precise pixels, it interpolates using probability."
+          takeaway="Hallucination is a feature of generalization, not just a bug. Since LLMs compress information lossily, PMs cannot eliminate hallucinations. Instead, design UI/UX patterns that frame LLM outputs as drafts, mandate human-in-the-loop review, and ground inputs using retrieval."
         />
       </div>
 

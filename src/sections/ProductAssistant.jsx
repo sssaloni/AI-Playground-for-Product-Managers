@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { GraduationCap, Upload, Play, Key, Eye, HelpCircle, AlertCircle } from 'lucide-react'
 import { useAppStore } from '../store/useAppStore'
 import PMInsight from '../components/PMInsight'
-import KarpathyInsight from '../components/KarpathyInsight'
 import PresenterNotes from '../components/PresenterNotes'
 
 const mockRetrievedChunks = [
@@ -601,11 +600,11 @@ export default function ProductAssistant() {
           </div>
         )}
 
-        <KarpathyInsight text="LLMs are stateless engines. They do not store user sessions or uploaded document keys in their parameter weights. Every message we send must reconstruct the entire history and context from scratch in the prompt template." />
-
         <PMInsight 
-          decision="Transparency is key to model debugging. Always build a 'debug console' or transparency view for your developers to verify what chunks are being retrieved and how prompts are assembled. This makes context window bugs visible."
-          impact="Reduce API token overhead. Ensure you have chunk filters and overlap controls so that garbage text doesn't bloat your prompt sizes."
+          concept="Session & Context Management"
+          source="Anthropic Developer Guides, 'Managing Context Windows' (2024)"
+          quote="LLM endpoints are stateless. They do not remember previous API calls. Developers must pass the entire conversation history back to the model with every new user message."
+          takeaway="Conversational products have scaling costs. As chat histories grow, each user turn costs progressively more due to quadratic attention costs and prompt size. PMs must manage this by implementing chat-history summarization or window pruning."
         />
       </div>
 

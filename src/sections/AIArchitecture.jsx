@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Layers, ArrowDown, ArrowRight, Play, Server, Database, Settings, ShieldAlert, Cpu } from 'lucide-react'
 import PMInsight from '../components/PMInsight'
-import KarpathyInsight from '../components/KarpathyInsight'
 import PresenterNotes from '../components/PresenterNotes'
 import { useAppStore } from '../store/useAppStore'
 
@@ -228,11 +227,11 @@ export default function AIArchitecture() {
           </div>
         </div>
 
-        <KarpathyInsight text="The prompt orchestrator is traditional Python/JavaScript code that connects the APIs. Don't write logic inside prompts when you can write logic in code. Prompts are for reasoning; code is for control loops." />
-
         <PMInsight 
-          decision="Building AI products requires managing a distributed network of vendor APIs. Ensure your architecture has fallback logic for model endpoints (e.g. if Claude goes down, automatically route queries to GPT-4o) and monitors latency bottlenecks at the database layer."
-          impact="Minimize vendor lock-in. Build your application using general model integrations so you can swap model providers as API pricing and context window speed improve."
+          concept="Hybrid Architecture & Semantic Orchestration"
+          source="Harrison Chase (Creator of LangChain), 'Building LLM Applications in Production' (2023)"
+          quote="Production LLM apps are complex graphs of steps: routing queries, calling APIs, formatting templates, parsing outputs, and keeping state."
+          takeaway="Do not make the LLM the main controller of your app. PMs should define a hybrid architecture: use code (routers, schemas) for routing and state machine logic, and use the LLM only for reasoning at specific nodes. Implement semantic caches to save API costs."
         />
       </div>
 

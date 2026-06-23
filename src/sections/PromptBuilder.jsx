@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Hammer, Sparkles, AlertCircle, Copy, Check, Play, Info } from 'lucide-react'
 import PMInsight from '../components/PMInsight'
-import KarpathyInsight from '../components/KarpathyInsight'
 import PresenterNotes from '../components/PresenterNotes'
 import { useAppStore } from '../store/useAppStore'
 
@@ -405,11 +404,11 @@ export default function PromptBuilder() {
           </div>
         </div>
 
-        <KarpathyInsight text="Prompting is instruction tuning via natural language. Think of the LLM as an operating system. Writing a prompt is writing a lightweight, temporary software program to run on its weights." />
-
         <PMInsight 
-          decision="Prompt engineering is a product design task. Do not let developers write prompts in isolation. PMs should define the constraints, tone, and edge-cases that align with target user expectations."
-          impact="Save engineering cycles. By polishing prompts first, you can validate feature viability before writing custom backend code or fine-tuning models."
+          concept="In-Context Learning (ICL)"
+          source="Brown et al., 'Language Models are Few-Shot Learners' (NeurIPS 2020)"
+          quote="In-context learning allows the model to adapt to a task at inference time simply by prepending examples, without any weight updates."
+          takeaway="Prompt engineering is a rapid prototyping tool, not a stable production backend. PMs should use prompts to discover features, but transition core instructions to few-shot system context, dynamic routers, or fine-tuning to reduce prompt drift and prevent jailbreak injection attacks."
         />
       </div>
 

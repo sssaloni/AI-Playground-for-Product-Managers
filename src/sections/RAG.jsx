@@ -1929,8 +1929,10 @@ LLM Output: { "sentiment": "negative", "score": 0.12 } (Perfect match to format!
         </div>
 
         <PMInsight 
-          decision="RAG systems decouple the model logic from the truth dataset. You can swap document files or refresh vector indices in real-time, instantly updating what your AI product knows without retraining fees."
-          impact="Zero retraining costs, easy data citation links, custom permission filtering, and drastically reduced hallucination rates for business applications."
+          concept="Retrieval Ingestion Pipeline"
+          source="Pinecone / LangChain Research, 'Chunking Strategies for LLM Applications' (2023)"
+          quote="The quality of RAG is directly bound by the quality of the retriever. If the correct document chunk is not retrieved, the LLM has zero chance of generating a grounded answer."
+          takeaway="A RAG system is a search engine pipeline first, and an LLM pipeline second. PMs must focus on data ingestion hygiene: document parsing (extracting tables/PDFs correctly), setting appropriate chunk sizes and overlap, and tuning the cosine-similarity retrieval threshold to block out-of-domain queries."
         />
       </div>
     </div>

@@ -207,8 +207,10 @@ export default function EvolutionOfAI() {
         </div>
 
         <PMInsight 
-          decision="LLMs represent shift from search and matching to semantic synthesis. Products built on search queries can now provide instant answers rather than indexing link pages."
-          impact="Fewer clicks, higher conversion. The product directly answers user intent, removing navigation steps but requiring stronger evaluation because answers are generated dynamically."
+          concept="System Complexity Shift"
+          source="Chip Huyen, 'Designing Machine Learning Systems' (O'Reilly, 2022)"
+          quote="System complexity is no longer about the rules written by developers, but about the data pipelines, continuous validation loops, and feedback systems that feed the learning models."
+          takeaway="The shift from static predictions to agentic systems means PMs must plan for multi-agent loops and tool APIs. Success is defined by the quality of the execution environment (browsers, sandboxes) and error-recovery fallback systems."
         />
       </div>
 

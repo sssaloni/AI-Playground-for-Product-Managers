@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { Hash, Play, Info, ArrowRight, Binary, Compass, DollarSign, Layers, Sparkles, RefreshCw, HelpCircle, BookOpen, Settings, Check } from 'lucide-react'
 import PMInsight from '../components/PMInsight'
-import KarpathyInsight from '../components/KarpathyInsight'
 import PresenterNotes from '../components/PresenterNotes'
 import { useAppStore } from '../store/useAppStore'
-
 const presetTexts = {
+  "A product manager builds the roadmap.": [
+    { text: "A", id: 317 },
+    { text: " product", id: 2432 },
+    { text: " manager", id: 5022 },
+    { text: " builds", id: 12891 },
+    { text: " the", id: 262 },
+    { text: " road", id: 4381 },
+    { text: "map", id: 2341 },
+    { text: ".", id: 13 }
+  ],
   "Artificial Intelligence": [
     { text: "Artificial", id: 35282 },
     { text: " Intelligence", id: 18274 }
@@ -72,10 +80,9 @@ const getTokenizationFlowData = (text) => {
   
   words.forEach((word) => {
     if (!word) return
-    
     let tokens = []
     const lower = word.toLowerCase().replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"")
-    
+
     if (lower === "tokenizer") {
       tokens = [
         { text: "token", id: 1357 },
@@ -99,8 +106,20 @@ const getTokenizationFlowData = (text) => {
       ]
     } else if (lower === "manager") {
       tokens = [
-        { text: "man", id: 812 },
-        { text: "ager", id: 1928 }
+        { text: "manager", id: 5022 }
+      ]
+    } else if (lower === "product") {
+      tokens = [
+        { text: "product", id: 2432 }
+      ]
+    } else if (lower === "builds") {
+      tokens = [
+        { text: "builds", id: 12891 }
+      ]
+    } else if (lower === "roadmap") {
+      tokens = [
+        { text: "road", id: 4381 },
+        { text: "##map", id: 2341 }
       ]
     } else {
       // General mock BPE splitter
@@ -118,8 +137,7 @@ const getTokenizationFlowData = (text) => {
         ]
       }
     }
-    
-    // Generate deterministic embedding vector for each token
+
     tokens = tokens.map((token) => {
       const vector = []
       const vectorSize = 3072
@@ -454,24 +472,22 @@ export default function TokenizerVisualizer() {
 
   // Tabs State
   const [activeTab, setActiveTab] = useState(() => localStorage.getItem('tokenizer_active_tab') || 'guided')
-
   // Guided & Custom Tab States
-  const [guidedText, setGuidedText] = useState("Artificial Intelligence")
+  const [guidedText, setGuidedText] = useState("A product manager builds the roadmap.")
   const [customText, setCustomText] = useState(() => localStorage.getItem('tokenizer_custom_text') || 'Standard SaaS automation tools need optimization.')
   const [tokens, setTokens] = useState([])
 
   // Tokenization Flow Tab States
-  const [tokenizationText, setTokenizationText] = useState(() => localStorage.getItem('tokenization_flow_text') || 'Tokenizer')
+  const [tokenizationText, setTokenizationText] = useState(() => localStorage.getItem('tokenization_flow_text') || 'A product manager builds the roadmap.')
   const [selectedDimensions, setSelectedDimensions] = useState(1536)
   const [selectedTokenName, setSelectedTokenName] = useState(null)
   const [isTraining, setIsTraining] = useState(false)
   const [trainingProgress, setTrainingProgress] = useState(0)
 
   // Token Magic Tab States
-  const [magicText, setMagicText] = useState(() => localStorage.getItem('tokenizer_magic_text') || 'He is playing football in the park.')
-  const [selectedMagicTokenName, setSelectedMagicTokenName] = useState('play')
+  const [magicText, setMagicText] = useState(() => localStorage.getItem('tokenizer_magic_text') || 'A product manager builds the roadmap.')
+  const [selectedMagicTokenName, setSelectedMagicTokenName] = useState('build')
   const [selectedAltIndex, setSelectedAltIndex] = useState(0)
-
   // Reset selected alt index when clicked token changes
   useEffect(() => {
     setSelectedAltIndex(0)
@@ -612,6 +628,25 @@ export default function TokenizerVisualizer() {
           notes="Explain Byte Pair Encoding (BPE). Show that English text averages ~4 characters per token. Emojis and languages like Hindi, Japanese, or Arabic require far more tokens per word, leading to higher costs and latency. In addition, trailing spaces or capitalizations can double token usage."
           exercise="Click the '👨🏽‍💻' (Developer Emoji) preset. Point out that a single emoji requires 4 tokens. Ask: 'If your customer is typing in emojis, are you paying more?' Yes. Let them type custom words in the text box."
         />
+
+        {/* Concept Explanation Block */}
+        <div className="bg-zinc-900/40 border border-zinc-800 rounded-xl p-5 mt-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-brandPurple/5 rounded-full blur-2xl pointer-events-none" />
+          <h3 className="text-xs uppercase font-mono font-bold tracking-widest text-brandPurple bg-brandPurple/10 border border-brandPurple/20 px-2 py-0.5 rounded w-fit">
+            Concept Explanation & Unified Example
+          </h3>
+          <p className="text-zinc-300 text-sm mt-3 leading-relaxed">
+            <strong>Tokenization:</strong> AI models cannot process letters or words directly. They require text to be split into smaller, numerical chunks called <strong>Tokens</strong>. These are looked up in a vocabulary index (mapping string fragments to unique integer <strong>Token IDs</strong>). A common BPE (Byte Pair Encoding) tokenizer splits less frequent words (like "roadmap" into "road" + "map").
+          </p>
+          <div className="mt-4 border-t border-zinc-800/80 pt-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <span className="text-zinc-400">
+              <strong>Unified Example:</strong> <span className="font-mono text-zinc-200">"A product manager builds the roadmap."</span> splits as:
+            </span>
+            <span className="text-brandPurple font-mono font-semibold">
+              ["A", " product", " manager", " builds", " the", " road", "map", "."]
+            </span>
+          </div>
+        </div>
 
         {/* Tab Selection */}
         <div className="flex flex-wrap bg-zinc-950 p-1 rounded-xl border border-zinc-800 w-fit mt-6 gap-1">
@@ -1684,11 +1719,11 @@ export default function TokenizerVisualizer() {
           </div>
         )}
 
-        <KarpathyInsight text="BPE tokenizer is a separate pre-processing module. The model does not see raw text; it receives a sequence of token IDs. Trailing spaces, uppercase letters, and non-English scripts often cause token inflation." />
-
         <PMInsight 
-          decision="Tokens dictate everything. They determine your API bills, latency (more tokens = slower generation), and context window limits (when the history gets wiped). Minimize prompt sizing and truncate unnecessary user feedback history."
-          impact="If you support non-English languages (e.g. Hindi), you will pay up to 4x more for the same length of content. Plan your pricing tier and token margins accordingly."
+          concept="Subword Tokenization (BPE)"
+          source="Sennrich et al., 'Neural Machine Translation of Rare Words with Subword Units' (ACL 2016)"
+          quote="Subword segmentation (Byte Pair Encoding) is simple and effective. It allows models to handle unseen vocabularies but introduces subtle boundaries where word fragments carry split semantic weights."
+          takeaway="PMs must account for tokenization mismatch. Non-English languages suffer from 'Token Inflation' (costing 3-10x more for the same meaning) and security bugs like 'clashing tokens' (e.g., special strings crashing the system). Vocab boundaries also affect prompt-injected JSON validation."
         />
       </div>
 

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { Map, Info, Database, Play, ToggleLeft, ToggleRight, ArrowDown, Upload, FileText } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PMInsight from '../components/PMInsight'
-import KarpathyInsight from '../components/KarpathyInsight'
 import PresenterNotes from '../components/PresenterNotes'
 import { useAppStore } from '../store/useAppStore'
 
@@ -464,11 +463,11 @@ export default function RAGSimulator() {
           </div>
         )}
 
-        <KarpathyInsight text="RAG resolves the temporal cutoff and factual knowledge boundaries of LLMs. By providing context directly within the prompt template (system context), we change the LLM from a closed-book system guessing facts to an open-book synthesizer." />
-
         <PMInsight 
-          decision="RAG is the primary pattern for building business intelligence software. Instead of trying to fine-tune a model on your data (which is expensive, slow, and doesn't guarantee accuracy), use a vector database to search context and feed it to a standard LLM."
-          impact="Drastically decreases costs and hallucination rates. You can update your company knowledge base in real-time by updating document indices, without retraining the AI model."
+          concept="Parametric vs Non-Parametric Memory"
+          source="Lewis et al., 'Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks' (NeurIPS 2020)"
+          quote="RAG combines pre-trained parametric memory with non-parametric external memory. It allows the model to access external document stores to generate grounded, factually correct responses."
+          takeaway="RAG is the most cost-effective way to ground a model. Unlike fine-tuning which edits weights (the model's 'skills'), RAG provides context (the model's 'textbook'). PMs should use RAG when documents update hourly, require strict source citations, or must respect user access permissions."
         />
       </div>
 

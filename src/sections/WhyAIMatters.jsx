@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calendar, Cpu, Settings, MessageSquare, Terminal, Play } from 'lucide-react'
-import KarpathyInsight from '../components/KarpathyInsight'
 import PMInsight from '../components/PMInsight'
 import PresenterNotes from '../components/PresenterNotes'
 import { useAppStore } from '../store/useAppStore'
@@ -167,11 +166,11 @@ export default function WhyAIMatters() {
           </AnimatePresence>
         </div>
 
-        <KarpathyInsight text="LLMs are not databases; they are next-token predictors. We have built an intelligence engine that understands structure and logic. The training is compression; intelligence emerges from prediction." />
-        
         <PMInsight 
-          decision="Natural language is becoming the universal API. PMs should stop designing rigid forms and click paths and start thinking about intent resolution and semantic inputs."
-          impact="Interfaces will shrink. Products will shift from complex dashboards to conversational systems, semantic query inputs, and agentic task execution in the background."
+          concept="Software 2.0 Paradigm"
+          source="Andrej Karpathy, 'Software 2.0' (Medium, 2017)"
+          quote="Software 1.0 is code written by humans. Software 2.0 is code written by optimization search algorithms over a dataset of examples. The programmer specifies the goal, compiles the data, and the neural network optimizes the behavior."
+          takeaway="Traditional PMs write PRDs with precise feature specs. In Software 2.0, PMs act as data curators and behavior designers. Product management shifts from designing deterministic flows to defining objective evaluation sets (evals) and monitoring distributional shift."
         />
       </div>
 

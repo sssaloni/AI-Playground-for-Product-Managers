@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Sparkles, ArrowRight, Binary, Database, Hash, Eye, Compass, Play } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PMInsight from '../components/PMInsight'
-import KarpathyInsight from '../components/KarpathyInsight'
 import PresenterNotes from '../components/PresenterNotes'
 import { useAppStore } from '../store/useAppStore'
 
@@ -141,11 +140,11 @@ export default function InsideChatGPT() {
           </AnimatePresence>
         </div>
 
-        <KarpathyInsight text="LLMs are neural network engines. The model operates by feeding tokens through embedding matrices, running attention blocks, predicting logits, and outputting token indices. That is the entire secret. Training is compression, generation is autocomplete." />
-
         <PMInsight 
-          decision="Understanding the query lifecycle is essential for debugging. Latency, inaccuracies, and token costs are not random—they map directly to specific pipeline stages (e.g. slow RAG queries slow down step 5, large token inputs bottleneck step 2 & 3)."
-          impact="Allows pinpoint optimizations. You can speed up your app by indexing vectors better, selecting lighter tokenizer formats, or caching common prompts."
+          concept="Transformer Architecture"
+          source="Vaswani et al., 'Attention Is All You Need' (NeurIPS 2017)"
+          quote="The Transformer allows for significantly more parallelization during training... replacing recurrent layers with multi-headed self-attention."
+          takeaway="Knowing the hardware-software boundary is crucial. Transformers are compute-bound (FLOPs) during pre-training but memory-bandwidth bound (memory retrieval from GPU VRAM) during generation, which directly determines the unit economics (cost per million tokens) of your product."
         />
       </div>
 

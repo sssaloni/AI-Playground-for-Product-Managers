@@ -3,11 +3,16 @@ import { motion } from 'framer-motion'
 import { Play, RotateCcw, ArrowRight, Binary } from 'lucide-react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 import PMInsight from '../components/PMInsight'
-import KarpathyInsight from '../components/KarpathyInsight'
 import PresenterNotes from '../components/PresenterNotes'
 import { useAppStore } from '../store/useAppStore'
 
 const presetPrompts = {
+  "A product manager builds the": [
+    { token: " product", prob: 80 },
+    { token: " team", prob: 12 },
+    { token: " strategy", prob: 6 },
+    { token: " backlog", prob: 2 }
+  ],
   "The capital of France is": [
     { token: " Paris", prob: 92 },
     { token: " London", prob: 4 },
@@ -19,17 +24,17 @@ const presetPrompts = {
     { token: " lawyer", prob: 3 },
     { token: " chance", prob: 1 },
     { token: " solution", prob: 1 }
-  ],
-  "Once upon a time": [
-    { token: " there", prob: 88 },
-    { token: " a", prob: 8 },
-    { token: " in", prob: 3 },
-    { token: " upon", prob: 1 }
   ]
 }
 
 // Sequence generation mocks
 const generationSequences = {
+  "A product manager builds the": [
+    { text: "A product manager builds the product", nextProbs: [{ token: " roadmap", prob: 85 }, { token: " backlog", prob: 10 }, { token: " team", prob: 4 }, { token: " pizza", prob: 1 }] },
+    { text: "A product manager builds the product roadmap", nextProbs: [{ token: ".", prob: 90 }, { token: " and", prob: 7 }, { token: " to", prob: 3 }] },
+    { text: "A product manager builds the product roadmap.", nextProbs: [{ token: " This", prob: 60 }, { token: " It", prob: 30 }, { token: " They", prob: 10 }] },
+    { text: "A product manager builds the product roadmap. This", nextProbs: [{ token: " document", prob: 75 }, { token: " helps", prob: 15 }, { token: " is", prob: 10 }] }
+  ],
   "The capital of France is": [
     { text: "The capital of France is Paris", nextProbs: [{ token: ".", prob: 95 }, { token: " which", prob: 3 }, { token: " and", prob: 2 }] },
     { text: "The capital of France is Paris.", nextProbs: [{ token: " It", prob: 60 }, { token: " The", prob: 30 }, { token: " Located", prob: 10 }] },
@@ -41,14 +46,9 @@ const generationSequences = {
     { text: "Where there's a will, there's a way.", nextProbs: [{ token: " This", prob: 80 }, { token: " It", prob: 15 }, { token: " Proverbs", prob: 5 }] },
     { text: "Where there's a will, there's a way. This", nextProbs: [{ token: " means", prob: 90 }, { token: " proverb", prob: 8 }, { token: " simple", prob: 2 }] },
     { text: "Where there's a will, there's a way. This means", nextProbs: [{ token: " that", prob: 95 }, { token: " humans", prob: 3 }, { token: " determination", prob: 2 }] }
-  ],
-  "Once upon a time": [
-    { text: "Once upon a time there", nextProbs: [{ token: " was", prob: 95 }, { token: " lived", prob: 4 }, { token: " existed", prob: 1 }] },
-    { text: "Once upon a time there was", nextProbs: [{ token: " a", prob: 90 }, { token: " an", prob: 8 }, { token: " some", prob: 2 }] },
-    { text: "Once upon a time there was a", nextProbs: [{ token: " king", prob: 40 }, { token: " beautiful", prob: 30 }, { token: " little", prob: 20 }, { token: " princess", prob: 10 }] },
-    { text: "Once upon a time there was a beautiful", nextProbs: [{ token: " princess", prob: 60 }, { token: " queen", prob: 20 }, { token: " castle", prob: 15 }, { token: " forest", prob: 5 }] }
   ]
 }
+
 
 export default function NextTokenPredictor() {
   const { completeSection } = useAppStore()
@@ -211,6 +211,26 @@ export default function NextTokenPredictor() {
           notes="Explain the fundamental truth of LLMs: they have no concept of 'facts' or 'truth.' They are statistical autocomplete on steroids. By showing the probability distribution of words, help PMs understand that the LLM is picking the most mathematically likely next word. When it hallucinated, it didn't lie; it just picked a likely word that was factually incorrect."
           exercise="Select 'The capital of France is'. Show how Paris is 92%. Ask the classroom: 'What happens if we select London (4%)? It starts building a false narrative.' (e.g. 'The capital of France is London. This city...'). The model will keep generating based on the new context."
         />
+
+        {/* Concept Explanation Block */}
+        <div className="bg-zinc-900/40 border border-zinc-800 rounded-xl p-5 mt-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-brandPurple/5 rounded-full blur-2xl pointer-events-none" />
+          <h3 className="text-xs uppercase font-mono font-bold tracking-widest text-brandPurple bg-brandPurple/10 border border-brandPurple/20 px-2 py-0.5 rounded w-fit">
+            Concept Explanation & Unified Example
+          </h3>
+          <p className="text-zinc-300 text-sm mt-3 leading-relaxed">
+            <strong>Next-Token Prediction:</strong> Large Language Models (LLMs) do not access a database of facts or have true logical reasoning. Instead, they process the input text and calculate a probability distribution for the next possible word piece (token). Text is generated by repeatedly choosing the most likely token and adding it to the prompt.
+          </p>
+          <div className="mt-4 border-t border-zinc-800/80 pt-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+            <span className="text-zinc-400">
+              <strong>Unified Example:</strong> Starting with <span className="font-mono text-zinc-205">"A product manager builds the"</span>, the model predicts candidates like:
+            </span>
+            <span className="text-brandPurple font-mono font-semibold">
+              " product" (80%) | " team" (12%) | " strategy" (6%)
+            </span>
+          </div>
+        </div>
+
 
         {/* Tab Selection */}
         <div className="flex bg-zinc-950 p-1 rounded-xl border border-zinc-800 w-fit mt-6">
@@ -380,11 +400,11 @@ export default function NextTokenPredictor() {
           </div>
         </div>
 
-        <KarpathyInsight text="LLMs are next-token predictors. They don't copy-paste facts; they learn a high-dimensional probability model of the internet and generate text one word at a time based on those weights." />
-
         <PMInsight 
-          decision="Hallucinations are not bugs; they are the natural state of LLMs. When you build features requiring exact data matching (e.g., balance verification), do not let the LLM generate the values. Retrieve the data from a database and inject it as context."
-          impact="Establish guardrails. Use structured output models or API tools to bypass natural text generation when factual accuracy is absolute."
+          concept="Next-Token Prediction & Compression"
+          source="Ilya Sutskever, 'Unsupervised Verification and Prediction' (Stanford Seminar)"
+          quote="Compression is intelligence. The better a model can predict the next character or token, the more structure and logic of the world it must have compressed inside its weights."
+          takeaway="Since LLMs do not 'think' or access a static database by default during generation, PMs must understand that accuracy is a probability curve. To improve reasoning, models need 'compute-time expansion' (e.g., Chain of Thought), forcing them to predict tokens that represent intermediate steps."
         />
       </div>
 

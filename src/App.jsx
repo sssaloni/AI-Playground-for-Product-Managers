@@ -20,9 +20,10 @@ import AIArchitecture from './sections/AIArchitecture'
 import CapstoneChallenge from './sections/CapstoneChallenge'
 import InsideChatGPT from './sections/InsideChatGPT'
 import ResponseGenerator from './sections/ResponseGenerator'
+import Login from './components/Login'
 
 function App() {
-  const { activeSection, presenterMode } = useAppStore()
+  const { activeSection, presenterMode, userEmail } = useAppStore()
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark')
 
   useEffect(() => {
@@ -59,6 +60,10 @@ function App() {
       case 15: return <ResponseGenerator />
       default: return <WhyAIMatters />
     }
+  }
+
+  if (!userEmail) {
+    return <Login />
   }
 
   return (

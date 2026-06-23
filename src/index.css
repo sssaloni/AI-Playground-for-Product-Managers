@@ -340,3 +340,47 @@
   color: #71717a !important;
 }
 
+/* PM Research Insight Light Mode Overrides */
+.light .bg-brandGreen\/10 {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+}
+.light .bg-brandGreen\/15 {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+}
+.light .border-brandGreen\/25 {
+  border-color: rgba(16, 185, 129, 0.25) !important;
+}
+.light .border-brandGreen\/30 {
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Hide background glow blur elements in light mode to prevent text obscuring */
+.light .pointer-events-none.blur-xl,
+.light .pointer-events-none.blur-2xl,
+.light .pointer-events-none.blur-3xl {
+  display: none !important;
+}
+
+/* Creator Card Hover Style */
+.creator-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.creator-card:hover {
+  background-color: rgba(139, 92, 246, 0.08) !important;
+  border-color: rgba(139, 92, 246, 0.4) !important;
+  box-shadow: 0 20px 30px -10px rgba(139, 92, 246, 0.15), 0 0 25px rgba(139, 92, 246, 0.05) !important;
+  transform: translateY(-2px);
+}
+
+.light .creator-card {
+  background-color: #ffffff !important;
+  border-color: #e4e4e7 !important;
+}
+
+.light .creator-card:hover {
+  background-color: rgba(139, 92, 246, 0.05) !important;
+  border-color: rgba(139, 92, 246, 0.3) !important;
+  box-shadow: 0 20px 30px -10px rgba(139, 92, 246, 0.08) !important;
+  transform: translateY(-2px);
+}
